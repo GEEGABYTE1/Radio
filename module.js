@@ -21,7 +21,16 @@ class Radio {
         return contract_status
     }
 
-    connect_nft(nft_address, network) {
+    async fetch_data(chainId, address, api_key, baseURL) {
+        const url = new URL(`${baseURL}${chainId}/tokens/${address}/token_holders/?key=${api_key}`);
+        const response = await fetch(url);
+        const result = await response.json();
+        const data = result.data;
+        return data;
+    }
+
+
+    async connect_nft(nft_address, network) {
         const nft_validation = this.check_contract(nft_address)
         if (nft_validation === false) {
             throw new Error(`NFT Contract Address not valid - Contract Address: ${nft_address}`)
