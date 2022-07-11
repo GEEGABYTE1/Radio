@@ -15,4 +15,38 @@ class Radio {
     get sdk () {
         return this._epnssdk
     }
+
+    check_contract(contract) {
+        const contract_status = web3.utils.isAddress(contract)
+        return contract_status
+    }
+
+    connect_nft(nft_address, network) {
+        const nft_validation = this.check_contract(nft_address)
+        if (nft_validation === false) {
+            throw new Error(`NFT Contract Address not valid - Contract Address: ${nft_address}`)
+        } else {
+            var chainId = undefined
+            var validation = true
+            const block_id = {'eth':'1', "poly":'137'} // 2 Providers
+            if (network === 'eth') {
+                chainId = block_id[network]
+            } else if (network === 'poly') {
+                chainId = block_id[network]
+            } else {
+                throw new Error(`Network ${network} is not a valid parameter`)
+                validation = false
+            }
+
+            if (validation === true ) {
+                const baseURL = 'https://api.covalenthq.com/v1/'
+                const api_key = process.env.API_KEY
+                const array = await fetch_data(chainId, nft_address, api_key, baseURL)
+                this._contract_holders = array
+            } else {
+                return []
+            }
+        }
+    }   
+
 }
