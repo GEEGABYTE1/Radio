@@ -1,13 +1,14 @@
 {
   "name": "radio",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sending Announcements and SOS In Large Events got easier",
+  "main": "./src/script.js",
+  "keywords": ["large events", "communication", "broadcasting", "web3", "blockchain", "epns"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jaival Patel (www.jaivalpatel.com)",
+  "license": "MIT",
   "dependencies": {
     "@epnsproject/backend-sdk-staging": "^2.0.3",
     "dotenv": "^16.0.1",

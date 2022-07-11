@@ -169,5 +169,4 @@ class Run {
     
 }
 
-test = new Run()
-test.running()
+exports.radio = new Run()
