@@ -56,6 +56,14 @@ class Radio {
                 return []
             }
         }
-    }   
+    }
+
+    
+    async fetch_subscribers() {
+        const allSubscribers = await this._epnssdk.getSubscribedUsers()
+        return allSubscribers
+    }
+    
+    
 
 }
