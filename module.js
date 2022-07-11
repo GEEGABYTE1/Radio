@@ -63,7 +63,7 @@ class Radio {
         }
     }
 
-    async sendm_sub (message_title, message_content) {
+    async sendm_sub (message_title, message_content, redirect_link) {
         const subscribers = this.fetch_subscribers()
         let subscriber_idx = 0 
         const message_title_verify = this.message_title_verification(message_title)
@@ -74,13 +74,28 @@ class Radio {
             if (message_title_verify[0] === false) {
                 throw new Error(`${message_content} does not match word limit. Character Word Limit is ${message_content_verify[1]} instead of 20`)
             } else {
-
-            }
+                const notification_title = 'Announcement'
+                const notification_content = this.notification_content(message_content)
+                
+            }   
         }
 
     }
 
-    
+    notification_content(message_content) {
+        const message_content_lst = message_content.split('')
+        var resulting_string = ''
+        const half_length = message_content_lst / 2
+        const message_split_lst = message_content_lst.slice(0, half_length)
+        let idx = 0 
+        for (idx; idx <= message_split_lst.length; idx++) {
+            var letter = message_split_lst[idx]
+            resulting_string += letter
+        }
+        return resulting_string
+    }
+
+
     message_content_verification (message_content) {
         message_content_lst = message_content.split('')
         if (message_content_lst.length < 1 || message_content_lst.length > 85) {
