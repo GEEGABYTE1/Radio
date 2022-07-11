@@ -8,11 +8,16 @@ const web3 = new Web3(Web3.givenProvider || 'https://eth-goerli.gateway.pokt.net
 class Radio {
     constructor(private_key) {
         this._epnssdk = new EpnsSDK(private_key)
+        this._contract_holders = []
 
     }
 
     get sdk () {
         return this._epnssdk
+    }
+
+    get contract_holders () {
+        return this.contract_holders
     }
 
     check_contract(contract) {
@@ -58,13 +63,60 @@ class Radio {
         }
     }
 
+    async sendm_sub (message_title, message_content) {
+        const subscribers = this.fetch_subscribers()
+        let subscriber_idx = 0 
+        const message_title_verify = this.message_title_verification(message_title)
+        if (message_title_verify[0] === false) {
+            throw new Error(`${message_title} does not match word limit. Character Word Limit is ${message_title_verify[1]} instead of 20`)
+        } else {
+            const message_content_verify = this.message_content_verification(message_content)
+            if (message_title_verify[0] === false) {
+                throw new Error(`${message_content} does not match word limit. Character Word Limit is ${message_content_verify[1]} instead of 20`)
+            } else {
+
+            }
+        }
+
+    }
+
     
+    message_content_verification (message_content) {
+        message_content_lst = message_content.split('')
+        if (message_content_lst.length < 1 || message_content_lst.length > 85) {
+            return [false, message_content_lst.length]
+        } else {
+            return true
+        }
+    }
+
+    message_title_verification (message_title) {
+        message_title_content = message_content.split('')
+        if (message_title_content.length < 1 || message_title.length > 20) {
+            return [false, message_title_content.length]
+        } else {
+            return true
+        }
+    }
+
     async fetch_subscribers() {
         const allSubscribers = await this._epnssdk.getSubscribedUsers()
         return allSubscribers
     }
     
+    time () {
+        const date = new Date()
+        const year = date.getFullYear()
+        const month = date.getMonth()
+        const day = date.getDate()
+        const hours = date.getHours()
+        const minutes = date.getMinutes()
+        const seconds = date.getSeconds()
+        const date_string = `0${month}/${day}/${year}`
+        const time_string = `${hours}:${minutes}:${seconds}`
+        return [date_string, time_string]
 
+    }
 
 
 }
