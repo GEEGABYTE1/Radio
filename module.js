@@ -64,8 +64,7 @@ class Radio {
     }
 
     async sendm_sub (message_title, message_content, redirect_link) {
-        const subscribers = this.fetch_subscribers()
-        let subscriber_idx = 0 
+
         const message_title_verify = this.message_title_verification(message_title)
         if (message_title_verify[0] === false) {
             throw new Error(`${message_title} does not match word limit. Character Word Limit is ${message_title_verify[1]} instead of 20`)
@@ -76,7 +75,24 @@ class Radio {
             } else {
                 const notification_title = 'Announcement'
                 const notification_content = this.notification_content(message_content)
-                
+                const subscribers = this.fetch_subscribers()
+                let subscriber_idx = 0
+                try { 
+                    for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
+                        let account = subscribers[subscriber_idx]
+                        const reponse = account = await this._epnssdk.sendNotification(
+                            account,
+                            message_title,
+                            message_content,
+                            notification_title,
+                            notification_content,
+                            1,
+                            redirect_link
+                        )
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
             }   
         }
 
