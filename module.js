@@ -20,6 +20,10 @@ class Radio {
         return this.contract_holders
     }
 
+    set contract_holders(array) {
+        this._contract_holders = array
+    }
+
     check_contract(contract) {
         const contract_status = web3.utils.isAddress(contract)
         return contract_status
@@ -34,7 +38,7 @@ class Radio {
     }
 
 
-    async connect_nft(nft_address, network) {
+    async connect_nft(nft_address, network) {                       // User Function
         const nft_validation = this.check_contract(nft_address)
         if (nft_validation === false) {
             throw new Error(`NFT Contract Address not valid - Contract Address: ${nft_address}`)
@@ -55,15 +59,18 @@ class Radio {
             if (validation === true ) {
                 const baseURL = 'https://api.covalenthq.com/v1/'
                 const api_key = process.env.API_KEY
-                const array = await fetch_data(chainId, nft_address, api_key, baseURL)
+                const array = await this.fetch_data(chainId, nft_address, api_key, baseURL)
+
                 this._contract_holders = array
+                return this._contract_holders
+                
             } else {
                 return []
             }
         }
     }
 
-    async sendm_sub (message_title, message_content, redirect_link) {
+    async sendm_sub (message_title, message_content, redirect_link) {                   // User Function
 
         const message_title_verify = this.message_title_verification(message_title)
         if (message_title_verify[0] === false) {
@@ -75,11 +82,14 @@ class Radio {
             } else {
                 const notification_title = 'Announcement'
                 const notification_content = this.notification_content(message_content)
-                const subscribers = this.fetch_subscribers()
+                const subscribers = await this.fetch_subscribers()
                 let subscriber_idx = 0
+                console.log(subscribers)
+                
                 try { 
                     for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
                         let account = subscribers[subscriber_idx]
+                        console.log(account)
                         const reponse = account = await this._epnssdk.sendNotification(
                             account,
                             message_title,
@@ -89,6 +99,7 @@ class Radio {
                             1,
                             redirect_link
                         )
+                        console.log(`${account} has been sent the message`)
                     }
                 } catch (err) {
                     console.log(err)
@@ -113,7 +124,7 @@ class Radio {
 
 
     message_content_verification (message_content) {
-        message_content_lst = message_content.split('')
+        const message_content_lst = message_content.split('')
         if (message_content_lst.length < 1 || message_content_lst.length > 85) {
             return [false, message_content_lst.length]
         } else {
@@ -122,7 +133,7 @@ class Radio {
     }
 
     message_title_verification (message_title) {
-        message_title_content = message_content.split('')
+        const message_title_content = message_title.split('')
         if (message_title_content.length < 1 || message_title.length > 20) {
             return [false, message_title_content.length]
         } else {
@@ -153,6 +164,24 @@ class Radio {
 }
 
 
-radio = new Radio(process.env.PRIVATE_KEY)
-console.log(radio.sdk)
+// Test Scripting
 
+const radio = new Radio(process.env.PRIVATE_KEY)
+
+
+
+// Helper Functions
+async function connect_nft(contract_address, network) {
+    console.log(await radio.connect_nft(contract_address, network))
+    if (radio.contract_holders.length !== 0) {
+        return radio._contract_holders
+    }
+    //console.log(radio._contract_holders)
+}
+
+async function sendm_sub(message_title, message_content, redirect_link) {
+    const sub_result = await radio.sendm_sub(message_title, message_content, redirect_link)
+    console.log(sub_result)
+}
+
+sendm_sub('Test from Module', 'Test from Module Content', 'www.google.ca')
