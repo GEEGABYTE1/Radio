@@ -1,9 +1,8 @@
-import fetch from "node-fetch"
-import promptSync from 'prompt-sync';
-const prompt = promptSync();
-import Web3 from 'web3'
-const web3 = new Web3(Web3.givenProvider || 'https://eth-goerli.gateway.pokt.network/v1/lb/62b7830e123e6f003984c794')
-import 'dotenv/config'
+const fetch = require('node-fetch')
+const EpnsSDK = require("@epnsproject/backend-sdk-staging").default
+require('dotenv').config()
+const Web3 = require('web3')         
+const web3 = new Web3(Web3.givenProvider || 'https://eth-goerli.gateway.pokt.network/v1/lb/62b7830e123e6f003984c794') 
 
 
 class Radio {
@@ -43,8 +42,9 @@ class Radio {
             } else if (network === 'poly') {
                 chainId = block_id[network]
             } else {
-                throw new Error(`Network ${network} is not a valid parameter`)
                 validation = false
+                throw new Error(`Network ${network} is not a valid parameter`)
+                
             }
 
             if (validation === true ) {
@@ -64,6 +64,12 @@ class Radio {
         return allSubscribers
     }
     
-    
+
+
 
 }
+
+
+radio = new Radio(process.env.PRIVATE_KEY)
+console.log(radio.sdk)
+
