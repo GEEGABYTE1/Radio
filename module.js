@@ -9,6 +9,7 @@ class Radio {
     constructor(private_key) {
         this._epnssdk = new EpnsSDK(private_key)
         this._contract_holders = []
+        this.nft_address = undefined
 
     }
 
@@ -37,17 +38,20 @@ class Radio {
         return data;
     }
 
-    async filter_accounts () {
+    async filter_accounts (array) {
         if (this._contract_holders === 0) {
             throw new Error('NFT Holders are Empty')
         } else {
             let addresses_from_query = []
-            let transaction_metadata = this.contract_holders['items']
+            let transaction_metadata = array['items']
+            
+            
             let transaction_idx = 0 
             for (transaction_idx; transaction_idx <= transaction_metadata.length; transaction_idx++) {
                 let transaction = transaction_metadata[transaction_idx]
                 if (transaction !== undefined) {
                     const address_filter = transaction['address']
+                    
                     let contract_check = web3.utils.isAddress(address_filter)
                     if (contract_check === true) {
                         addresses_from_query.push(address_filter)
@@ -82,27 +86,50 @@ class Radio {
             }
 
             if (validation === true ) {
-                const baseURL = 'https://api.covalenthq.com/v1/'
-                const api_key = process.env.API_KEY
-                const array = await this.fetch_data(chainId, nft_address, api_key, baseURL)
 
-                this._contract_holders = array
-                
-                
-                
+                const fetched_arrays = this.fetch_acc(chainId, nft_address)
+                this.nft_address = nft_address
+                return fetched_arrays
+                     
             } else {
                 return []
             }
         }
     }
 
-    async sendm_nft(message_title, message_content, redirect_link) {
-        const filtered_accounts_covalent = this.filter_accounts()
-        const subbed_accounts = this.fetch_subscribers()
+    async fetch_acc (chainId, nft_address) {
+        const baseURL = 'https://api.covalenthq.com/v1/'
+        const api_key = process.env.API_KEY
+        const array = await this.fetch_data(chainId, nft_address, api_key, baseURL)
+        const array_filtered = await this.filter_accounts(array)
+        //console.log(array_filtered)
+        this._contract_holders = array_filtered
+        return array_filtered
+    }
+
+    async sendm_nft(message_title, message_content, redirect_link, network) {
+        var chainId = undefined
+        const block_id = {'eth':'1', "poly":'137'} // 2 Providers
+        if (network === 'eth') {
+            chainId = block_id[network]
+        } else if (network === 'poly') {
+            chainId = block_id[network]
+        } else {
+            throw new Error(`Network ${network} is not a valid parameter`)   
+        }
+
+
+        const filtered_accounts_covalent = this.fetch_acc(chainId, this.nft_address)
+        console.log(filtered_accounts_covalent)
+        
+        const subbed_accounts = await this.fetch_subscribers()
+        
         if (filtered_accounts_covalent.length === 0 || subbed_accounts.length === 0) {
             throw new Error('Addresses were not found')
         } else {
-            const verification_result = verification(filtered_accounts_covalent, subbed_accounts)
+            const verification_result = this.verification(filtered_accounts_covalent, subbed_accounts)
+            
+            console.log(verification_result)
             if (verification_result.length > 0) {
                 for (let verification_idx=0; verification_idx <= verification_result.length; verification_idx++) {
                     not_subbed_account = verification_result[verification_idx]
@@ -120,6 +147,7 @@ class Radio {
                     } else {
                         const notification_title = 'Announcement'
                         const notification_content = this.notification_content(message_content)
+                        console.log(filtered_accounts_covalent)
                         const subscribers = filtered_accounts_covalent
                         let subscriber_idx = 0
                         console.log(filtered_accounts_covalent)
@@ -173,9 +201,9 @@ class Radio {
             } else {
                 const notification_title = 'Announcement'
                 const notification_content = this.notification_content(message_content)
-                const subscribers = this.fetch_subscribers()
+                const subscribers = await this.fetch_subscribers()
                 let subscriber_idx = 0
-                console.log(subscribers)
+                
                 
                 try { 
                     for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
@@ -264,8 +292,10 @@ const radio = new Radio(process.env.PRIVATE_KEY)
 
 // Helper Functions
 async function connect_nft(contract_address, network) {
-    await radio.connect_nft(contract_address, network)
+    result = await radio.connect_nft(contract_address, network)
     if (radio.contract_holders.length !== 0) {
+        console.log(result)
+        radio.contract_holders = result
         return radio.contract_holders
     }
     //console.log(radio._contract_holders)
@@ -275,9 +305,27 @@ async function sendm_sub(message_title, message_content, redirect_link) {
     const sub_result = await radio.sendm_sub(message_title, message_content, redirect_link)
     console.log(sub_result)
 }
+async function sendm_nft(message_title, message_content, redirect_link, network) {
+    const sub_result = await radio.sendm_nft(message_title, message_content, redirect_link, network)
+    console.log(sub_result)
+}
 
 //sendm_sub('Test from Module', 'Test from Module Content', 'www.google.ca')
 
-result = connect_nft('0xe21ebcd28d37a67757b9bc7b290f4c4928a430b1', 'eth')
-console.log(result)
-console.log('------------------------------')
+
+async function test() {             // Module has Asynchronous Nature
+    result = await connect_nft('0xe21ebcd28d37a67757b9bc7b290f4c4928a430b1', 'eth')
+    //console.log(result)
+    //console.log('------------------------------')
+    
+}
+
+async function test2() {
+    await sendm_nft('Test from Module', 'Test from Module Content', 'www.google.ca', 'eth')
+}
+test()
+test2()
+
+
+
+//sendm_nft('Test from Module', 'Test from Module Content', 'www.google.ca')
