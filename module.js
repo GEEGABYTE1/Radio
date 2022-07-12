@@ -119,11 +119,11 @@ class Radio {
         }
 
 
-        const filtered_accounts_covalent = this.fetch_acc(chainId, this.nft_address)
+        const filtered_accounts_covalent = await this.fetch_acc(chainId, this.nft_address)
         console.log(filtered_accounts_covalent)
         
         const subbed_accounts = await this.fetch_subscribers()
-        
+        console.log(subbed_accounts)
         if (filtered_accounts_covalent.length === 0 || subbed_accounts.length === 0) {
             throw new Error('Addresses were not found')
         } else {
@@ -132,11 +132,11 @@ class Radio {
             console.log(verification_result)
             if (verification_result.length > 0) {
                 for (let verification_idx=0; verification_idx <= verification_result.length; verification_idx++) {
-                    not_subbed_account = verification_result[verification_idx]
+                    const not_subbed_account = verification_result[verification_idx]
                     console.log(` WARNING: ${not_subbed_account} has not subscribed to the channel yet but still will 
                     be sent the message`)
                 } 
-            } else {
+            } 
                 const message_title_verify = this.message_title_verification(message_title)
                 if (message_title_verify[0] === false) {
                     throw new Error(`${message_title} does not match word limit. Character Word Limit is ${message_title_verify[1]} instead of 20`)
@@ -147,14 +147,15 @@ class Radio {
                     } else {
                         const notification_title = 'Announcement'
                         const notification_content = this.notification_content(message_content)
-                        console.log(filtered_accounts_covalent)
+                        
                         const subscribers = filtered_accounts_covalent
                         let subscriber_idx = 0
-                        console.log(filtered_accounts_covalent)
+                        
                         
                         try { 
                             for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
                                 let account = subscribers[subscriber_idx]
+                                
                                 console.log(account)
                                 const reponse = account = await this._epnssdk.sendNotification(
                                     account,
@@ -167,12 +168,14 @@ class Radio {
                                 )
                                 console.log(`${account} has been sent the message`)
                             }
+                            return true
                         } catch (err) {
                             console.log(err)
+                            return false
                         }
                     }   
                 }
-            }
+            
         }
         
     }
@@ -180,7 +183,7 @@ class Radio {
     verification(covalent, subbed) {
         const subbed_accounts = []
         let covalent_idx =0
-        for (covalent_idx; covalent_idx <= covalent.length; convalent_idx ++) {
+        for (covalent_idx; covalent_idx <= covalent.length; covalent_idx++) {
             const covalent_account = covalent[covalent_idx]
             if (covalent_account in subbed) {} else {
                 subbed_accounts.push(covalent_account)
@@ -202,13 +205,14 @@ class Radio {
                 const notification_title = 'Announcement'
                 const notification_content = this.notification_content(message_content)
                 const subscribers = await this.fetch_subscribers()
-                let subscriber_idx = 0
                 
+                let subscriber_idx = 0
                 
                 try { 
                     for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
                         let account = subscribers[subscriber_idx]
-                        console.log(account)
+                        
+                        //console.log(account)
                         const reponse = account = await this._epnssdk.sendNotification(
                             account,
                             message_title,
@@ -218,10 +222,13 @@ class Radio {
                             1,
                             redirect_link
                         )
-                        console.log(`${account} has been sent the message`)
+                        //console.log(`${account} has been sent the message`)
+                        
                     }
+                    return true
                 } catch (err) {
                     console.log(err)
+                    return false
                 }
             }   
         }
@@ -321,10 +328,15 @@ async function test() {             // Module has Asynchronous Nature
 }
 
 async function test2() {
-    await sendm_nft('Test from Module', 'Test from Module Content', 'www.google.ca', 'eth')
+    const result = await sendm_nft('Test from Module', 'Test from Module Content', 'www.google.ca', 'eth')
+    // return true or false
+}
+
+async function test3() {
+    const result = sendm_sub('Test from Module', 'Test from Module Content', 'www.google.ca')
 }
 test()
-test2()
+test3()
 
 
 
