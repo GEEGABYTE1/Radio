@@ -37,6 +37,32 @@ class Radio {
         return data;
     }
 
+    async filter_accounts () {
+        if (this.contract_holders === 0) {
+            throw new Error('NFT Holders are Empty')
+        } else {
+            let addresses_from_query = []
+            let transaction_metadata = this.contract_holders['items']
+            let transaction_idx = 0 
+            for (transaction_idx; transaction_idx <= transaction_metadata.length; transaction_idx++) {
+                let transaction = transaction_metadata[transaction_idx]
+                if (transaction !== undefined) {
+                    const address_filter = transaction['address']
+                    let contract_check = web3.utils.isAddress(address_filter)
+                    if (contract_check === true) {
+                        addresses_from_query.push(address_filter)
+                    } else {
+
+                    }
+                }
+            }
+
+            return addresses_from_query
+        }
+    }
+
+
+
 
     async connect_nft(nft_address, network) {                       // User Function
         const nft_validation = this.check_contract(nft_address)
@@ -184,4 +210,7 @@ async function sendm_sub(message_title, message_content, redirect_link) {
     console.log(sub_result)
 }
 
-sendm_sub('Test from Module', 'Test from Module Content', 'www.google.ca')
+//sendm_sub('Test from Module', 'Test from Module Content', 'www.google.ca')
+
+result = connect_nft('0xe21ebcd28d37a67757b9bc7b290f4c4928a430b1', 'eth')
+console.log(result)
