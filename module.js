@@ -163,7 +163,40 @@ class Radio {
     }
 
     async sendm_sub (message_title, message_content, redirect_link) {                   // User Function
-
+        const message_title_verify = this.message_title_verification(message_title)
+        if (message_title_verify[0] === false) {
+            throw new Error(`${message_title} does not match word limit. Character Word Limit is ${message_title_verify[1]} instead of 20`)
+        } else {
+            const message_content_verify = this.message_content_verification(message_content)
+            if (message_title_verify[0] === false) {
+                throw new Error(`${message_content} does not match word limit. Character Word Limit is ${message_content_verify[1]} instead of 20`)
+            } else {
+                const notification_title = 'Announcement'
+                const notification_content = this.notification_content(message_content)
+                const subscribers = this.fetch_subscribers()
+                let subscriber_idx = 0
+                console.log(subscribers)
+                
+                try { 
+                    for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
+                        let account = subscribers[subscriber_idx]
+                        console.log(account)
+                        const reponse = account = await this._epnssdk.sendNotification(
+                            account,
+                            message_title,
+                            message_content,
+                            notification_title,
+                            notification_content,
+                            1,
+                            redirect_link
+                        )
+                        console.log(`${account} has been sent the message`)
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            }   
+        }
 
 
     }
@@ -247,3 +280,4 @@ async function sendm_sub(message_title, message_content, redirect_link) {
 
 result = connect_nft('0xe21ebcd28d37a67757b9bc7b290f4c4928a430b1', 'eth')
 console.log(result)
+console.log('------------------------------')
