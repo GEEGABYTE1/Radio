@@ -293,15 +293,18 @@ class Radio {
 
 // Test Scripting
 
+// ***** radio has asynchornous nature  *****
 const radio = new Radio(process.env.PRIVATE_KEY)
 
 
 
 // Helper Functions
+
+/*
 async function connect_nft(contract_address, network) {
     result = await radio.connect_nft(contract_address, network)
     if (radio.contract_holders.length !== 0) {
-        console.log(result)
+        //console.log(result)
         radio.contract_holders = result
         return radio.contract_holders
     }
@@ -341,3 +344,4 @@ test3()
 
 
 //sendm_nft('Test from Module', 'Test from Module Content', 'www.google.ca')
+*/
