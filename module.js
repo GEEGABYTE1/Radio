@@ -17,7 +17,7 @@ class Radio {
     }
 
     get contract_holders () {
-        return this.contract_holders
+        return this._contract_holders
     }
 
     set contract_holders(array) {
@@ -38,7 +38,7 @@ class Radio {
     }
 
     async filter_accounts () {
-        if (this.contract_holders === 0) {
+        if (this._contract_holders === 0) {
             throw new Error('NFT Holders are Empty')
         } else {
             let addresses_from_query = []
@@ -87,7 +87,8 @@ class Radio {
                 const array = await this.fetch_data(chainId, nft_address, api_key, baseURL)
 
                 this._contract_holders = array
-                return this._contract_holders
+                
+                
                 
             } else {
                 return []
@@ -230,9 +231,9 @@ const radio = new Radio(process.env.PRIVATE_KEY)
 
 // Helper Functions
 async function connect_nft(contract_address, network) {
-    console.log(await radio.connect_nft(contract_address, network))
+    await radio.connect_nft(contract_address, network)
     if (radio.contract_holders.length !== 0) {
-        return radio._contract_holders
+        return radio.contract_holders
     }
     //console.log(radio._contract_holders)
 }
