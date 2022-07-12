@@ -60,8 +60,7 @@ class Radio {
             return addresses_from_query
         }
     }
-
-
+    
 
 
     async connect_nft(nft_address, network) {                       // User Function
@@ -96,42 +95,75 @@ class Radio {
         }
     }
 
+    async sendm_nft(message_title, message_content, redirect_link) {
+        const filtered_accounts_covalent = this.filter_accounts()
+        const subbed_accounts = this.fetch_subscribers()
+        if (filtered_accounts_covalent.length === 0 || subbed_accounts.length === 0) {
+            throw new Error('Addresses were not found')
+        } else {
+            const verification_result = verification(filtered_accounts_covalent, subbed_accounts)
+            if (verification_result.length > 0) {
+                for (let verification_idx=0; verification_idx <= verification_result.length; verification_idx++) {
+                    not_subbed_account = verification_result[verification_idx]
+                    console.log(` WARNING: ${not_subbed_account} has not subscribed to the channel yet but still will 
+                    be sent the message`)
+                } 
+            } else {
+                const message_title_verify = this.message_title_verification(message_title)
+                if (message_title_verify[0] === false) {
+                    throw new Error(`${message_title} does not match word limit. Character Word Limit is ${message_title_verify[1]} instead of 20`)
+                } else {
+                    const message_content_verify = this.message_content_verification(message_content)
+                    if (message_title_verify[0] === false) {
+                        throw new Error(`${message_content} does not match word limit. Character Word Limit is ${message_content_verify[1]} instead of 20`)
+                    } else {
+                        const notification_title = 'Announcement'
+                        const notification_content = this.notification_content(message_content)
+                        const subscribers = filtered_accounts_covalent
+                        let subscriber_idx = 0
+                        console.log(filtered_accounts_covalent)
+                        
+                        try { 
+                            for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
+                                let account = subscribers[subscriber_idx]
+                                console.log(account)
+                                const reponse = account = await this._epnssdk.sendNotification(
+                                    account,
+                                    message_title,
+                                    message_content,
+                                    notification_title,
+                                    notification_content,
+                                    1,
+                                    redirect_link
+                                )
+                                console.log(`${account} has been sent the message`)
+                            }
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }   
+                }
+            }
+        }
+        
+    }
+    
+    verification(covalent, subbed) {
+        const subbed_accounts = []
+        let covalent_idx =0
+        for (covalent_idx; covalent_idx <= covalent.length; convalent_idx ++) {
+            const covalent_account = covalent[covalent_idx]
+            if (covalent_account in subbed) {} else {
+                subbed_accounts.push(covalent_account)
+            }
+        }
+
+        return subbed_accounts
+    }
+
     async sendm_sub (message_title, message_content, redirect_link) {                   // User Function
 
-        const message_title_verify = this.message_title_verification(message_title)
-        if (message_title_verify[0] === false) {
-            throw new Error(`${message_title} does not match word limit. Character Word Limit is ${message_title_verify[1]} instead of 20`)
-        } else {
-            const message_content_verify = this.message_content_verification(message_content)
-            if (message_title_verify[0] === false) {
-                throw new Error(`${message_content} does not match word limit. Character Word Limit is ${message_content_verify[1]} instead of 20`)
-            } else {
-                const notification_title = 'Announcement'
-                const notification_content = this.notification_content(message_content)
-                const subscribers = await this.fetch_subscribers()
-                let subscriber_idx = 0
-                console.log(subscribers)
-                
-                try { 
-                    for (subscriber_idx; subscriber_idx <= subscribers.length; subscriber_idx++) {
-                        let account = subscribers[subscriber_idx]
-                        console.log(account)
-                        const reponse = account = await this._epnssdk.sendNotification(
-                            account,
-                            message_title,
-                            message_content,
-                            notification_title,
-                            notification_content,
-                            1,
-                            redirect_link
-                        )
-                        console.log(`${account} has been sent the message`)
-                    }
-                } catch (err) {
-                    console.log(err)
-                }
-            }   
-        }
+
 
     }
 
