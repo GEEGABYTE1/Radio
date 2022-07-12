@@ -2,7 +2,7 @@
   "name": "radio",
   "version": "1.0.0",
   "description": "Sending Announcements and SOS In Large Events got easier",
-  "main": "./src/script.js",
+  "main": "./src/module.js",
 
   "keywords": [
     "large events",
