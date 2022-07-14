@@ -114,7 +114,36 @@ The `redirect_link` parameter is optional. If an event has a link to send to the
 
 The `network` parameter takes only two parameters: `eth` or `poly`. The parameter inputted should be parallel to which network the NFT is on.
 
-### Errors
+## Errors
+
+```
+Error: NFT Holders are Empy
+```
+Occurs when the Covalent API query cannot find the NFT address. It is important that the inputted `contract_address` must be valid and ***have*** a wallet that has owned or currently owns the NFT.
+
+```
+Error: NFT Contract Address not valid
+```
+
+Will prompt if the contract address is not valid, or does not reflect a ERC20 or ERC721 contract. Be sure that the `contract_address` parameters only take ERC20 or ERC721 addresses.
+
+```
+Network {network} is not a valid parameter
+```
+
+This error is typical when the `network` parameter is not `eth` or `poly`. It is essential that the user has the `network` parameter as only: `eth` or `poly` (polygon) as radio3 only supports the two chains.
+
+```
+Error: Addresses were not found
+```
+
+There are two possiblilities why this error can pop up. 1) The NFT contract address inputted was not found or had 0 holders. This error will be prompted when Covalent can not query or scrape the ***Accounts*** section of the NFT metadata. 2) The EPNS Channel of the Host is not found. It is necessary that the host has their EPNS channel on the ***staging*** platform.
+
+```
+{word}... does not match word limit
+```
+Occurs when either `message_content` or `message_title` does not adhere to the word limit. For the `message_content`, the word limit that the user must follow is between `1 < word < 115`. For `message_title`, the word limit holds as: `1 < word < 40`
+
 
 
 
