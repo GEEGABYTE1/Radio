@@ -252,7 +252,7 @@ class Radio {
 
     message_content_verification (message_content) {
         const message_content_lst = message_content.split('')
-        if (message_content_lst.length < 1 || message_content_lst.length > 85) {
+        if (message_content_lst.length < 1 || message_content_lst.length > 115) {
             return [false, message_content_lst.length]
         } else {
             return true
@@ -261,7 +261,7 @@ class Radio {
 
     message_title_verification (message_title) {
         const message_title_content = message_title.split('')
-        if (message_title_content.length < 1 || message_title.length > 20) {
+        if (message_title_content.length < 1 || message_title.length > 40) {
             return [false, message_title_content.length]
         } else {
             return true
