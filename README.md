@@ -1,4 +1,4 @@
-# radio3 (npm Version)
+# radio3 (Staging Version)
 
 A programming package to include decentralized large communication protocols. ***radio3*** allows event hosts to send announcements/SOS calls 
 to their participants with ease. 
@@ -15,7 +15,6 @@ Initialize npm directory:
 
 ```
 npm init 
-
 ```
 
 Install npm package:
