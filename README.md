@@ -9,8 +9,6 @@ Powered by an elementary ***Proof-of-Account***, ***radio3*** verifies participa
 
 ***Prerequisite:***
 
-If you haven't already, install the [Squarespace Local Development Server](http://developers.squarespace.com/local-development). Then...
-
 Initialize npm directory:
 
 ```
