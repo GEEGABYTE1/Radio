@@ -294,7 +294,12 @@ class Radio {
 // Test Scripting
 
 // ***** radio has asynchornous nature  *****
-const radio = new Radio(process.env.PRIVATE_KEY)
+
+exports.radio_init = function (private_key) {
+    const radio = new Radio(private_key)
+    return radio
+}
+
 
 
 
