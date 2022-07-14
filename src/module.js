@@ -124,7 +124,7 @@ class Radio {
         
         const subbed_accounts = await this.fetch_subscribers()
         console.log(subbed_accounts)
-        if (filtered_accounts_covalent.length === 0 || subbed_accounts.length === 0) {
+        if (filtered_accounts_covalent.length === 0) {
             throw new Error('Addresses were not found')
         } else {
             const verification_result = this.verification(filtered_accounts_covalent, subbed_accounts)
