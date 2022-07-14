@@ -3,6 +3,7 @@
 A programming package to include decentralized large communication protocols. ***radio3*** allows event hosts to send announcements/SOS calls 
 to their participants with ease. 
 
+Powered by an elementary ***Proof-of-Account***, ***radio3** verifies participants given an event. This integration requires events to have their custom NFTs along with EPNS channels. 
 ### Installation and use
 
 ***Prerequisite:***
