@@ -32,19 +32,14 @@ npm install -g radio3
 
 ### Dependencies
 
-Base Template depends on the following Squarespace modules for development:
+***radio3*** runs on three libraries at the moment: `node-fetch`, `@epnsproject/backend-sdk-staging`, `dotenv`, `web3`. 
 
-* [@squarespace/toolbelt](https://github.com/Squarespace/squarespace-toolbelt) - utilities for building and deploying a template.
-* [webpack](https://webpack.github.io/) - The JS bundler we're using.
+Currently, `node-fetch` is running on version *2.6.6* despite having recently published a new version *@3.7.8*. This is due to the new version not being a module, and thus, not being compatiable for ES6. 
 
-Base Template also depends on the following modules at runtime:
-
-* [@squarespace/core](https://github.com/Squarespace/squarespace-core) - core Squarespace javascript functionality
-
-*Note: `npm start` will prompt you to install the [Squarespace Local Development Server](developers.squarespace.com/local-development) if you haven't already.*
+The `@epnsproject/backend-sdk-staging` is currently an EPNS library for staging. This is currently used for beta purposes as it is compatible with the Ethereum Test Network *Kovan*. However, in the future *radio3* will be switching to the production library that will require users to need use mainnet `eth`, (***a seperate library will be published for product cases***)
 
 
-### Full npm script reference
+### radio3 reference
 
 
 #### npm run build
