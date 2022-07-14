@@ -128,7 +128,7 @@ Error: NFT Contract Address not valid
 Will prompt if the contract address is not valid, or does not reflect a ERC20 or ERC721 contract. Be sure that the `contract_address` parameters only take ERC20 or ERC721 addresses.
 
 ```
-Network {network} is not a valid parameter
+Error: Network {network} is not a valid parameter
 ```
 
 This error is typical when the `network` parameter is not `eth` or `poly`. It is essential that the user has the `network` parameter as only: `eth` or `poly` (polygon) as radio3 only supports the two chains.
@@ -140,33 +140,22 @@ Error: Addresses were not found
 There are two possiblilities why this error can pop up. 1) The NFT contract address inputted was not found or had 0 holders. This error will be prompted when Covalent can not query or scrape the ***Accounts*** section of the NFT metadata. 2) The EPNS Channel of the Host is not found. It is necessary that the host has their EPNS channel on the ***staging*** platform.
 
 ```
-{word}... does not match word limit
+Error: {word}... does not match word limit
 ```
 Occurs when either `message_content` or `message_title` does not adhere to the word limit. For the `message_content`, the word limit that the user must follow is between `1 < word < 115`. For `message_title`, the word limit holds as: `1 < word < 40`
 
 ## Resources
 
 Found below are some resources to understand the technologies used for radio3:
-[EPNS Staging App](https://staging.epns.io/)
-[EPNS](https://epns.io/)
-[Covalent API](https://www.covalenthq.com/)
+ - [EPNS Staging App](https://staging.epns.io/)
+ - [EPNS](https://epns.io/)
+ - [Covalent API](https://www.covalenthq.com/)
 
 ## Contact Information
 Here are some of the ways you can find me:
-[www.jaivalpatel.com]
+ - [www.jaivalpatel.com]
+ - [Twitter](https://twitter.com/patjaival)
+ - [npm](https://www.npmjs.com/~jaivalpatel1)
+ - [Instagram](https://www.instagram.com/jaivalpatelll/)
 
-## Copyright and License
-
-Copyright 2016 Squarespace, INC.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Made by @Jaival - 2022
