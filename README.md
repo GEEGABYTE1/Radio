@@ -1,6 +1,7 @@
-# Base Template (npm Version)
+# radio3 (npm Version)
 
-This is the Squarespace Base Template, a minimal Squarespace template using **_Node Package Manager_** for local development, module installation and deployment.
+A programming package to include decentralized large communication protocols. ***radio3*** allows event hosts to send announcements/SOS calls 
+to their participants with ease. 
 
 ### Installation and use
 
