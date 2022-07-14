@@ -144,8 +144,16 @@ There are two possiblilities why this error can pop up. 1) The NFT contract addr
 ```
 Occurs when either `message_content` or `message_title` does not adhere to the word limit. For the `message_content`, the word limit that the user must follow is between `1 < word < 115`. For `message_title`, the word limit holds as: `1 < word < 40`
 
+## Resources
 
+Found below are some resources to understand the technologies used for radio3:
+[EPNS Staging App](https://staging.epns.io/)
+[EPNS](https://epns.io/)
+[Covalent API](https://www.covalenthq.com/)
 
+## Contact Information
+Here are some of the ways you can find me:
+[www.jaivalpatel.com]
 
 ## Copyright and License
 
