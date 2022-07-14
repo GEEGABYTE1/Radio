@@ -3,37 +3,31 @@
 A programming package to include decentralized large communication protocols. ***radio3*** allows event hosts to send announcements/SOS calls 
 to their participants with ease. 
 
-Powered by an elementary ***Proof-of-Account***, ***radio3** verifies participants given an event. This integration requires events to have their custom NFTs along with EPNS channels. 
+Powered by an elementary ***Proof-of-Account***, ***radio3*** verifies participants given an event ensuring security and easy event monitoring.
+
 ### Installation and use
 
 ***Prerequisite:***
 
 If you haven't already, install the [Squarespace Local Development Server](http://developers.squarespace.com/local-development). Then...
 
-Clone this repository:
+Initialize npm directory:
 
 ```
-git clone git@github.com:Squarespace/base-template-npm.git
-```
-
-Install npm packages:
+npm init 
 
 ```
-npm install
-```
 
-Start working:
+Install npm package:
 
 ```
-npm start
+npm install radio3
 ```
 
-... Make some changes.
-
-Finally, deploy:
+Global Installation npm pacakge:
 
 ```
-npm run deploy
+npm install -g radio3
 ```
 
 ### Dependencies
